@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Post
+import markdown
 # Create your views here.
 
 
@@ -13,7 +14,18 @@ def firstTemplateViews(request):
                                                             'welcome': '使用模板页'})
 
 '''使用render返回模板视图'''
-
 def postAllView(request):
     post_list = Post.objects.all().order_by('-create_time')
-    return render(request,'blog/postAllView.html',context={'post_list':post_list})
+    return render(request, 'blog/postAllView0.html', context={'post_list':post_list})
+
+'''博客详细页面'''
+def detail(request,pk):
+    post = get_object_or_404(Post,pk=pk)
+    #使用markdown
+    post.body = markdown.markdown(post.body,
+                                  extensions=[
+                                      'markdown.extensions.extra',  #某些扩展
+                                      'markdown.extensions.codehilite',  #代码高亮
+                                      'markdown.extensions.toc',  # 。tables表格处理， .toc在文档中生成目录
+                                  ])
+    return render(request,'blog/detail.html',context={'post':post})

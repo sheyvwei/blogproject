@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.six import python_2_unicode_compatible
-
+from django.urls import reverse
 # Create your models here.
 
 @python_2_unicode_compatible
@@ -37,3 +37,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    #生成url
+    #reverse  import django.urls  blog:detail   urls中 app_name='blog' 应用下的 name为detail的连接
+    def get_absolute_url(self):
+        return reverse('blog:detail',kwargs={'pk': self.pk})
