@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Post
+from comments.forms import CommentForm
 import markdown
 # Create your views here.
 
@@ -30,8 +31,17 @@ def detail(request,pk):
                                       'markdown.extensions.codehilite',  #代码高亮
                                       'markdown.extensions.toc',  # 。tables表格处理， .toc在文档中生成目录
                                   ])
-    return render(request,'blog/detail.html',context={'post':post})
+    #return render(request,'blog/detail.html',context={'post':post})
 
+    ###增加评论数据
+    form = CommentForm()
+    comment_list = post.comment_set.all()
+    context = {
+        'post':post,
+        'form': form,
+        'comment_list': comment_list
+    }
+    return render(request,'blog/detail.html', context=context)
 '''归档页面'''
 
 

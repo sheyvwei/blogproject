@@ -5,9 +5,9 @@ from . import views
 app_name = 'blog'
 urlpatterns = [
     url(r'^$',views.postAllView),
-    url(r'index', views.index,name='main'),
+    url(r'index', views.index,name='index'),
     url(r'firstTemplateView', views.firstTemplateViews,name='fff'),
-    url(r'postAllView',views.postAllView),
+    url(r'postAllView',views.postAllView, name='main'),
     #博客的详细页面
     url(r'^post/(?P<pk>[0-9]+)',views.detail,name='detail'),
     #归档路径
