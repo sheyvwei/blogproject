@@ -3,7 +3,46 @@ from django.http import HttpResponse
 from .models import Post
 from comments.forms import CommentForm
 import markdown
+#add vue
+from django.http import JsonResponse
+from django.core import serializers
+import json
+import datetime
 # Create your views here.
+
+
+###region使用前后端分离
+#保存文章
+def add_post(request):
+    response = {}
+    try:
+        create_time = datetime.datetime.now()
+        excerpt = request.GET.get('post_excerpt')
+        category = request.GET.get('post_category')
+        tags = request.GET.get('tags')
+        author = request.GET.get('author')
+        post = Post(title=request.GET.get('post_title'),body=request.GET.get('post_body'),create_time=create_time)
+        post.save()
+    except Exception as e:
+        response['isEff'] = 0
+        response['msg'] = str(e)
+    return JsonResponse(response)
+#显示文章
+def show_post(request):
+    response = {}
+    try:
+        post = Post.objects.filter()
+        # json.loads() 解码son数据
+        # serializers.serialize()序列化数据
+        response['list'] = json.loads(serializers.serialize("json",post,ensure_ascii=False),encoding='utf-8')
+        response['msg'] = 'success'
+        response['isEff'] = 1
+    except Exception as e:
+        response['msg'] = str(e)
+        response['isEff'] = 0
+    return JsonResponse(response)
+
+###endregion
 
 
 def index(request):
@@ -54,3 +93,4 @@ def archives(request, year, month):
 def catogory(request,pk):
     post_list = Post.objects.filter(category=pk).order_by('-create_time')
     return render(request,'blog/postAllView.html',context={'post_list':post_list})
+

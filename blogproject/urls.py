@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from django.views.generic import TemplateView
 from django.conf.urls import url,include
 
 urlpatterns = [
+    path(r'',TemplateView.as_view(template_name="index.html") ),
     path('admin/', admin.site.urls),
-    url(r'blog/', include('blog.urls')),
-    url('',include('comments.urls'))
+    # url(r'blog/', include('blog.urls')), # by vue
+    url('',include('comments.urls')),
+
+    ### add vue增加api
+    url(r'api/blog/', include('blog.urls')),
 ]
