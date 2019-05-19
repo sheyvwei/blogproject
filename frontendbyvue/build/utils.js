@@ -53,7 +53,16 @@ exports.cssLoaders = function (options) {
       return ['vue-style-loader'].concat(loaders)
     }
   }
-
+  //为vue设置公共的的stylus样式
+  var stylusOptions = {
+    import: [
+        path.join(__dirname, "../src/assets/styles/varibles.styl"), // 全局变量文件 文件后缀名为.styl
+    ]
+    // paths: [
+    //   path.join(__dirname, "../src/assets/"),
+    //   path.join(__dirname, "../")
+    // ]
+  }
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
   return {
     css: generateLoaders(),
@@ -61,8 +70,10 @@ exports.cssLoaders = function (options) {
     less: generateLoaders('less'),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
-    stylus: generateLoaders('stylus'),
-    styl: generateLoaders('stylus')
+    stylus: generateLoaders('stylus',stylusOptions),
+    styl: generateLoaders('stylus',stylusOptions)
+    // stylus: generateLoaders('stylus'),
+    // styl: generateLoaders('stylus')
   }
 }
 
